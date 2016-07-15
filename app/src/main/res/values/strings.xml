@@ -1,4 +1,4 @@
 <resources>
-    <string name="accessibility_description">启动自动进入微信文章</string>
+    <string name="accessibility_description">模拟点击</string>
     <string name="app_name">AccService_Study</string>
 </resources>
