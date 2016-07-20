@@ -124,9 +124,13 @@ public class MyAccessibility extends AccessibilityService {
                 }
                 /*如果是二级文章搜索页面*/
                 else if (className.equals("com.tencent.mm.plugin.webview.ui.tools.fts.FTSSearchTabWebViewUI")) {
-                   /* jump2();*/
                     jump3();
+                    getWebVIew();
                 }
+               /* *//*如果是文章列表展示页面*//*
+                else if (className.equals("org.chromium.content.browser.ContentViewCore")) {
+                    jump3();
+                }*/
                 break;
             /*通知栏状态改变*/
             case AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED:
@@ -194,6 +198,9 @@ public class MyAccessibility extends AccessibilityService {
     /*微信搜索主页面*/
     /*com.tencent.mm.plugin.search.ui.FTSMainUI*/
 
+    /*微信文章列表展示的webView页面*/
+    /*org.chromium.content.browser.ContentViewCore*/
+
     @SuppressLint("NewApi")
     private void jump() {
         AccessibilityNodeInfo noteInfo = getRootInActiveWindow();
@@ -202,19 +209,19 @@ public class MyAccessibility extends AccessibilityService {
            /* if (noteInfo.getContentDescription().equals("搜索")) {
                 Log.e(TAG, "搜索");
             }*/
-
+            Log.e(TAG, "jump");
             Log.e(TAG, "noteInfo.getContentDescription():" + noteInfo.getContentDescription());
             Log.e(TAG, "noteInfo.getContentDescription():" + noteInfo.getClassName());
 
-            List<AccessibilityNodeInfo> list = noteInfo
-                    .findAccessibilityNodeInfosByText("");
+            List<AccessibilityNodeInfo> list = noteInfo.findAccessibilityNodeInfosByText("");
+            Log.e(TAG, "list.size():" + list.size() + "");
+
             Log.e(TAG, "noteInfo.getChildCount():" + noteInfo.getChild(0).getChildCount());
             Log.e(TAG, "noteInfo.getChildCount():" + noteInfo.getChild(1).getChildCount());
             Log.e(TAG, "noteInfo.getChildCount():" + noteInfo.getChild(2).getChildCount());
             Log.e(TAG, "noteInfo.getChildCount():" + noteInfo.getChild(3).getChildCount());
             Log.e(TAG, "noteInfo.getChildCount():" + noteInfo.getChild(4).getChildCount());
             Log.e(TAG, "noteInfo.getChildCount():" + noteInfo.getChild(5).getChild(1).getContentDescription());
-            Log.e(TAG, "list.size():" + list.size() + "");
 
             noteInfo.getChild(5).getChild(1).performAction(AccessibilityNodeInfo.ACTION_CLICK);
         }
@@ -229,7 +236,7 @@ public class MyAccessibility extends AccessibilityService {
             for (AccessibilityNodeInfo n : list) {
                 n.performAction(AccessibilityNodeInfo.ACTION_CLICK);
             }*/
-
+            Log.e(TAG, "jump2");
             Log.e(TAG, "noteInfo.getChildCount():" + noteInfo.getChildCount());
             Log.e(TAG, "noteInfo.getChildCount():" + noteInfo.getChild(0).getClassName());
             Log.e(TAG, "noteInfo.getChildCount():" + noteInfo.getChild(1).getClassName());
@@ -243,42 +250,37 @@ public class MyAccessibility extends AccessibilityService {
         }
     }
 
-
     @SuppressLint("NewApi")
     private void jump3() {
         AccessibilityNodeInfo noteInfo = getRootInActiveWindow();
         if (noteInfo != null) {
-            List<AccessibilityNodeInfo> list = noteInfo
-                    .findAccessibilityNodeInfosByText("搜索文章");
 
-          /*  Log.e(TAG, "noteInfo.getChildCount():" + noteInfo.getChildCount());
+            List<AccessibilityNodeInfo> list = noteInfo.findAccessibilityNodeInfosByText("搜索文章");
+
+            Log.e(TAG, "jump3");
+            Log.e(TAG, "noteInfo.getChildCount():" + noteInfo.getChildCount());
             Log.e(TAG, "noteInfo.getChildCount():" + noteInfo.getChild(0).getClassName());
             Log.e(TAG, "noteInfo.getChildCount():" + noteInfo.getChild(1).getClassName());
-            Log.e(TAG, "noteInfo.getChildCount():" + noteInfo.getChild(0).getChildCount());
-            Log.e(TAG, "noteInfo.getChildCount():" + noteInfo.getChild(1).getChildCount());
-
-            Log.e(TAG, "noteInfo.getChildCount():" + noteInfo.getChild(1).getChild(0));
-            Log.e(TAG, "noteInfo.getChildCount():" + noteInfo.getChild(1).getChild(1));
-            Log.e(TAG, "noteInfo.getChildCount():" + noteInfo.getChild(1).getChild(2));
-            Log.e(TAG, "noteInfo.getChildCount():" + noteInfo.getChild(1).getChild(3));
-            Log.e(TAG, "noteInfo.getChildCount():" + noteInfo.getChild(1).getChild(4));*/
-
+            Log.e(TAG, "noteInfo.getChildCount():" + noteInfo.getChild(2).getClassName());
+            Log.e(TAG, "noteInfo.getChildCount():" + noteInfo.getChild(1).getChild(0).getChild(0).getClassName());
 
             Log.e(TAG, "list.size():" + list.size());
 
-//            Log.e(TAG, "noteInfo.getChild(1).getChild(2).getClassName():" + noteInfo.getChild(1).getChild(2).getClassName());
+            //Log.e(TAG, "noteInfo.getChild(1).getChild(2).getClassName():" + noteInfo.getChild(1).getChild(2).getClassName());
 
-            Bundle bundle = new Bundle();
-            bundle.putString("bundle", "Nihao");
+            Bundle arguments22 = new Bundle();
+            arguments22.putString(AccessibilityNodeInfo.ACTION_ARGUMENT_HTML_ELEMENT_STRING, "BUTTON");
+            noteInfo.getChild(1).getChild(0).getChild(0).performAction(AccessibilityNodeInfo.ACTION_NEXT_HTML_ELEMENT, arguments22);
 
             Bundle arguments = new Bundle();
             arguments.putCharSequence(AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE,
                     "你好");
             Log.e(TAG, "noteInfo.isVisibleToUser():" + noteInfo.isVisibleToUser());
 
-            if (noteInfo.isVisibleToUser()) {
+           /* if (noteInfo.isVisibleToUser() && noteInfo.getChild(1) != null) {
                 noteInfo.getChild(1).getChild(2).performAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_SET_TEXT.getId(), arguments);
-            }
+            }*/
+
 
 //            noteInfo.getChild(1).getChild(2).setText("你好");
            /* for (AccessibilityNodeInfo n : list) {
@@ -286,6 +288,21 @@ public class MyAccessibility extends AccessibilityService {
             }*/
         }
     }
+
+    @SuppressLint("NewApi")
+    private void getWebVIew() {
+        AccessibilityNodeInfo noteInfo = getRootInActiveWindow();
+        if (noteInfo != null) {
+            /*List<AccessibilityNodeInfo> list = noteInfo
+                    .findAccessibilityNodeInfosByText("2");
+            for (AccessibilityNodeInfo n : list) {
+                n.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+            }*/
+
+            Log.e(TAG, "getWebVIew:");
+        }
+    }
+
 
     /*当服务事件被中断时*/
     @Override
